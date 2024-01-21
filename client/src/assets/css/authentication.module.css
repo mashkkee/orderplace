@@ -1,0 +1,42 @@
+.auth {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('../auth-bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.auth__container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: rgba(48, 48, 48, 0.5);
+    height: 300px;
+    width: 400px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 25px;
+}
+
+.auth__container input {
+    padding: 10px 15px;
+    width: 200px;
+    border-radius: 15px;
+}
+
+.auth__container input[type="submit"] {
+    width: 150px;
+    border-radius: 15px;
+    background-color: rgb(95, 95, 180);
+    border: 0;
+    color: white;
+    cursor: pointer;
+}
+
+.auth__container h3 {
+    color: white;
+    text-transform: uppercase;
+    font-family: 'sans-serif';
+}
