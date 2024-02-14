@@ -20,9 +20,9 @@ function Authentication() {
         ).then(response => {
             if (response.data.message === "sucsess" && response.data.token) {
                 login(response.data.token)
-                navigate('/chef')
+                location.reload()
             } 
-
+            
         })
     }
     return (

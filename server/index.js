@@ -30,12 +30,13 @@ app.use(cors({
 
 
 function verifyToken(req, res, next) {
-    const token = req.headers.authorization;
-    jwt.verify(token, 'your-secret-key', (err, decoded) => {
+    let token = req.headers.authorization;
+    let newtoken = token.slice(7)
+
+    jwt.verify(newtoken, 'your-secret-key', (err, decoded) => {
         if (err) {
             return res.status(401).json({ error: 'Invalid token' });
         }
-        req.user = decoded;
         next();
     });
 }
@@ -61,6 +62,11 @@ app.get('/chef', verifyToken, (req, res) => {
 app.get('/owner', verifyToken, (req, res) => {
     res.send('Owner page')
 });
+
+app.post('/api/verify', verifyToken, (req, res) => {
+    res.json({status: 'sucsess'})
+});
+
 
 app.get('/api/:restaurantName/model', (req, res) => {
     let file = path.join(__dirname, `restaurant_models/${req.params.restaurantName}/model.gltf`)
@@ -97,14 +103,16 @@ app.post('/api/auth/', (req, res) => {
         if (results && results.length > 0) {
             let token = generateToken(results[0].user_restaurant, results[0].user_role)
             res.json({ message: 'sucsess', token: token })
-            console.log("test")
         } else {
             res.status(404).json({ message: 'Invalid Credentials. Please try again.' })
-            console.log("test")
 
         }
     })
 })
+
+// app.get('/api/menu/:restaurantName/:tableNum', (req, res) => {
+//     res.json([{restaurant: req.params.restaurantName, table: req.params.tableNum}])
+// })
 
 
 
