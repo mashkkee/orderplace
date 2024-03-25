@@ -15,10 +15,11 @@ function Authentication() {
 
     function handleSubmit(e) {
         e.preventDefault()
-        axios.post('http://192.168.1.3:5000/api/auth/',
+        axios.post(`http://${window.location.hostname}:5000/api/auth/` ,
             authData
         ).then(response => {
-            if (response.data.message === "sucsess" && response.data.token) {
+            if (response.data.message === "success" && response.data.token) {
+                console.log("Done")
                 login(response.data.token)
                 location.reload()
             } 

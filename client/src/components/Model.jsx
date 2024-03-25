@@ -5,10 +5,14 @@ import { useAuth } from './AuthContext'
 import { jwtDecode } from 'jwt-decode'
 import { Vector3 } from 'three';
 import * as THREE from 'three'
+import io from 'socket.io-client';
 
-// ... (other imports)
 
-const HighlightableMesh = ({ name, geometry, material, position, scale, rotation, onMeshClick, onDoubleClick, handleClick, controls, exited }) => {
+const HighlightableMesh = ({ name, geometry, material, position, scale, rotation, onDoubleClick, controls, exited }) => {
+  const { token, prihvaceniStolovi, setPrihvaceniStolovi } = useAuth();
+  const restaurant = jwtDecode(token).userRestaurant
+
+  const socket = useRef();
   const mesh = useRef();
   const ref = useRef();
   const [hovered, setHover] = useState(false);
@@ -18,7 +22,7 @@ const HighlightableMesh = ({ name, geometry, material, position, scale, rotation
   const [move, setMove] = useState(false);
   const handlePointerOver = () => !isNaN(mesh.current.name) ? setHover(true) : {}
   const handlePointerOut = () => !isNaN(mesh.current.name) ? setHover(false) : {}
-
+  const [orders, setOrders] = useState([])
   const meshClicked = () => {
     setMove(true)
   }
@@ -54,7 +58,21 @@ const HighlightableMesh = ({ name, geometry, material, position, scale, rotation
       camera.position.setY(0)
     }
   })
-
+  useEffect(() => {
+    socket.current = io('http://localhost:5000');
+    socket.current.on(`newOrder-${restaurant}`, (tableId) => {
+      setOrders((prevOrders) => [...prevOrders, tableId]);
+      setPrihvaceniStolovi(prev => prev.filter(item => item !== tableId));
+    });
+    socket.current.on(`removeOrder-${restaurant}`, (tableId) => {
+      setOrders((prevOrders) => prevOrders.filter(order => order !== tableId));
+    });
+    return () => {
+      if (socket.current) {
+        socket.current.disconnect();
+      }
+    };
+  }, []);
   return (
     <>
       <group>
@@ -62,44 +80,52 @@ const HighlightableMesh = ({ name, geometry, material, position, scale, rotation
           ref={mesh}
           name={name}
           geometry={geometry}
-          material={material}
+          material={ material}
           position={position}
           scale={scale}
           onDoubleClick={(e) => {
-              !isNaN(mesh.current.name) ? meshClicked() : {}
-              if (onDoubleClick) !isNaN(mesh.current.name) ? onDoubleClick(e) : {}
+            !isNaN(mesh.current.name) ? meshClicked() : {}
+            if (onDoubleClick) !isNaN(mesh.current.name) ? onDoubleClick(e) : {}
           }}
-        rotation={rotation}
-        onPointerOver={!move ? handlePointerOver : ""}
-        onPointerOut={handlePointerOut}
-        anchorX="center"
-        anchorY="middle"
+          rotation={rotation}
+          onPointerOver={!move ? handlePointerOver : ""}
+          onPointerOut={handlePointerOut}
+          anchorX="center"
+          anchorY="middle"
         >
-        {hovered && (
-          <meshBasicMaterial attach="material" color="" transparent opacity={0.9} />
-        )}
-        {!isNaN(name) ? (
-          <Text
-            ref={textRef}
-            position={[0, 1.009, 0]}
-            color="white"
-            rotation={[-1.59, 0, 0]}
-            fontSize={0.5}
-            anchorX="center"
-            anchorY="middle"
-          >
-            {name}
-          </Text>
-        ) : undefined}
-      </mesh>
-    </group >
+          {hovered && (
+            <meshBasicMaterial attach="material" color="" transparent opacity={0.9} />
+          )}
+
+          {!isNaN(name) ? (
+            <Text
+              ref={textRef}
+              position={[0, 1.009, 0]}
+              color="black"
+              rotation={[-1.59, 0, 0]}
+              fontSize={1}
+              anchorX="center"
+              anchorY="middle"
+            >
+              {name}
+            </Text>
+          ) : undefined}
+          {orders.length !=0 && orders.includes(name) ? (
+            prihvaceniStolovi.includes(name) ? <meshBasicMaterial attach="material" color="green" transparent opacity={0.7} /> : 
+            <meshBasicMaterial attach="material" color="blue" transparent opacity={0.7} />
+          ) : (
+            ""
+          )}
+        </mesh>
+
+      </group >
     </>
   );
 };
 
 const Model = ({ onMeshClick, controls, exited }) => {
   const { token } = useAuth();
-  const { nodes } = useGLTF(`http://192.168.1.3:5000/api/${jwtDecode(token).userRestaurant}/model`);
+  const { nodes } = useGLTF(`http://${window.location.hostname}:5000/api/${jwtDecode(token).userRestaurant}/model`);
   return (
     <>
       <group>

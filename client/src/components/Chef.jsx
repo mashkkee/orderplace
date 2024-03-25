@@ -1,15 +1,17 @@
 import React, { useEffect, Suspense, useRef, useState } from 'react'
 import * as rdd from 'react-device-detect';
 import { getCurrentBrowserFingerPrint } from "@rajesh896/broprint.js";
-import { Canvas, useLoader, useFrame, extend } from '@react-three/fiber'
+import { Canvas, useLoader, useFrame } from '@react-three/fiber'
 import { OrbitControls, Environment, CameraControls } from '@react-three/drei'
 import Model from './Model.jsx'
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from 'three';
 import '../App.css'
 import Modal from './Modal.jsx';
-
+import { jwtDecode } from 'jwt-decode';
+import { useAuth } from './AuthContext.jsx';
 function Admin() {
+    const { token } = useAuth()
     const [showModal, setShowModal] = useState(false)
     const [table, setTable] = useState(null)
     const [modal, setModal] = useState(false)
@@ -19,7 +21,7 @@ function Admin() {
         getCurrentBrowserFingerPrint().then(fprint => {
             setFingerPrint(fprint)
         })
-    
+
     }, [])
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -38,7 +40,7 @@ function Admin() {
     }
     return (
         <>
-            <Canvas style={{ height: "100vh", width: "100%", backgroundColor: "black" }}>
+            <Canvas  shadows style={{ height: "100vh", width: "100%" }}>
                 <OrbitControls
                     ref={controlsRef}
                     mouseButtons={
@@ -50,7 +52,10 @@ function Admin() {
                     }
                     maxZoom={Math.PI / 2}
                 />
-                <ambientLight intensity={1.3} color="white" />
+                <Environment files={'../../public/bush_restaurant_4k.hdr'} background blur={0.3} />
+                <directionalLight position={[1, 1, 0]} />
+                <gridHelper />
+
                 <Suspense fallback={null}>
                     <Model controls={controlsRef} onMeshClick={handleClick} exited={modal} />
                 </Suspense>
@@ -58,7 +63,7 @@ function Admin() {
 
             </Canvas>
             {
-                showModal && <Modal table={table} exit={modalClosed} />
+                showModal && <Modal restaurant={jwtDecode(token).userRestaurant} table={table} exit={modalClosed} />
             }
             {
                 <input type="button" value="Logout" onClick={handleLogout} />

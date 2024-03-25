@@ -1,0 +1,208 @@
+.menu {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    gap: 50px;
+    list-style: none;
+    flex-wrap: wrap;
+
+}
+
+
+
+.more__info {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(20, 20, 20, 0.5);
+}
+
+.more__info__container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 500px;
+    width: 90%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.more__info__close {
+    background-color: red;
+    width: fit-content;
+    font-size: 18px;
+    padding: 8px 10px;
+   align-self: flex-end;
+   margin: 10px 10px;
+   color: wheat;
+   font-family: 'Roboto', sans-serif;
+   font-weight: 600;
+
+}
+
+
+.menu__item__info {
+    opacity: 0.5;
+    font-size: 12px;
+}
+.more__info__description {
+    font-size: 20px;
+}
+
+.more__info__napomena {
+    font-size: 18px;
+    width: 80%;
+    align-self: center;
+    margin-top: 10px;
+    resize: none;
+}
+
+.more__info__container button {
+    padding: 10px 5px;
+    width: 50%;
+    align-self: center;
+    margin-top: auto;
+    margin-bottom: 20px;
+    border: none;
+    background-color: lime;
+    font-size: 18px;
+}
+
+.menu__container {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    width: 100%;
+    background: url("https://images.rawpixel.com/image_social_landscape/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L3B4MTA1NzQwNC1pbWFnZS1qb2I2MzAtYV8xLmpwZw.jpg");
+    background-size: cover;
+    min-height: 100vh;
+    height: auto;
+}
+
+.menu__item__name {
+    font-size: 18px;
+    align-self: flex-start;
+    margin-left: 10px;
+}
+
+.menu__item__image {
+    height: 60px;
+    width: 60px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    object-fit: cover;
+    align-self: center;
+
+    
+}
+
+
+.menu__information {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+    justify-content: space-around;
+    cursor: pointer;
+}
+
+.menu__item__order {
+    background-color: rgb(0, 121, 90);
+    width: 200px;
+    padding: 10px 20px;
+    border: 0;
+    border-radius: 25px;
+    font-size: 24px;
+    color: var(--color-2);
+    margin-bottom: 30px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.item__modal {
+    background-color: red;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+}
+.menu__item {
+    
+    display: flex;
+    align-items: center;
+    max-width: 300px;
+    min-width: 300px;
+    min-height: 60px;
+    max-height: 50px;
+    background-color: rgb(227, 227, 227);
+    backdrop-filter: blur(1px);
+    box-shadow: 0px 0px 30px black;
+    border-radius: 15px;
+    position: relative;
+    color: rgb(44, 44, 44);
+    margin-top: 30px;
+    font-family: 'Roboto';
+    font-size: 15px;
+
+}
+
+.menu__item__description {
+    font-weight: 100;
+}
+
+.menu__item__price {
+    align-self: flex-end;
+    min-width: max-content;
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 200;
+    margin-right: 10px;
+}
+
+.order__item {
+    position: absolute;
+    display: flex;
+    bottom: -55px;
+    left: 50%;
+    transform: translate(-50%);
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    color: rgb(44, 44, 44);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    
+}
+
+.placeorder__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 80px;
+}
+
+.order__item button {
+    padding: 2px 2px;
+    height: 40px;
+    width: 40px;
+    border: 0px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(44, 44, 44);
+    font-size: 24px;
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+}
